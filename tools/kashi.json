@@ -1,0 +1,8 @@
+{"slug":"kashi-ghat","title":"Kashi Ghat","kw":"kashi","inr":"999","usd":"12",
+ "hook":["Your wedding invitation,","at sunrise over Banaras"],
+ "name_sub":"Paper-cut Banaras · Carved sandstone arch",
+ "c1":["Ceremonies · Dress code","Venue map · Live countdown"],
+ "segs":[["What if your wedding invitation felt like sunrise over Banaras?",0.25],["Meet Kashi Ghat.",0.15],["Every ceremony, the dress code, the venue map, and a live countdown, all in one link.",0.25],["Guests R S V P in one tap.",0.25],["Just nine ninety-nine rupees, or twelve dollars outside India. Available worldwide.",0.2],["Templates start at just two ninety-nine rupees. Comment KASHI, and I'll send you the link.",0.35],["Find us at save our date, dot, in.",0.3]],
+ "y_feat_start":200,"y_plateau":[1400,1550],"y_feat_end":2900,"y_rsvp_end":3500,"y_count":3900,
+ "gold":[255,226,160],"tint":[34,14,10],"endbg":[60,14,24],"zoom":0.07,
+ "music":{"chords":[[48,55,59,64],[45,52,55,60],[41,48,52,57],[43,50,55,59]],"bpm":66,"seed":3}}

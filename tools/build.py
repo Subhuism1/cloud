@@ -53,10 +53,8 @@ last='b0'
 for i in range(1,len(tl)+1): fc.append(f"[{last}][o{i}]overlay[b{i}]"); last=f'b{i}'
 fc.append(f"[{last}]format=yuv420p[v]")
 run('ffmpeg','-y','-loglevel','error','-f','concat','-safe','0','-i',f'{work}/cap/frames.txt',*inputs,'-filter_complex',';'.join(fc),'-map','[v]','-t',str(D),'-r','30','-c:v','libx264','-crf','24','-preset','medium','-pix_fmt','yuv420p',f'{work}/silent.mp4')
-# 5. audio mix
-fr=cfg['chord']; ins=[]
-for f in fr: ins+=['-f','lavfi','-i',f'sine=f={f}:d={D+2}']
-run('ffmpeg','-y','-loglevel','error',*ins,'-filter_complex',f"{''.join(f'[{i}]' for i in range(len(fr)))}amix=inputs={len(fr)}:normalize=0,tremolo=f={cfg.get('trem',0.18)}:d=0.5,lowpass=f=900,aecho=0.8:0.7:700|1100:0.35|0.25,volume=0.5,afade=t=in:d=2,afade=t=out:st={D-2.5}:d=2.3,atrim=0:{D}[pad]",'-map','[pad]',f'{work}/pad.wav')
+# 5. music + mix
+run(f'{S}/kokoro/v/bin/python',f'{S}/music.py',f'{work}/music.wav',str(D+2),json.dumps(cfg['music']))
 out=f"/home/user/cloud/drafts/{slug}_final.mp4"
-run('ffmpeg','-y','-loglevel','error','-i',f'{work}/silent.mp4','-i',f'{work}/voice.wav','-i',f'{work}/pad.wav','-filter_complex',f"[1:a]aresample=48000,apad=whole_dur={D}[v];[2:a]aresample=48000,volume=0.10[m];[v][m]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.95[a]",'-map','0:v','-map','[a]','-c:v','copy','-c:a','aac','-b:a','192k','-t',str(D),out)
+run('ffmpeg','-y','-loglevel','error','-i',f'{work}/silent.mp4','-i',f'{work}/voice.wav','-i',f'{work}/music.wav','-filter_complex',f"[1:a]aresample=48000,apad=whole_dur={D},asplit=2[v][k];[2:a]aresample=48000,volume=0.42,atrim=0:{D}[m0];[m0][k]sidechaincompress=threshold=0.02:ratio=5:attack=30:release=500:makeup=1[m];[v][m]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.95[a]",'-map','0:v','-map','[a]','-c:v','copy','-c:a','aac','-b:a','192k','-t',str(D),out)
 print('OK',out,D)
